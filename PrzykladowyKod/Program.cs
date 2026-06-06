@@ -120,7 +120,7 @@ class Program
         schronisko.DodajZwierze(pies2);
         schronisko.DodajZwierze(kot1);
 
-        Console.WriteLine("=== SCHRONISKO DLA NIE ZWIERZĄT 2 ===");
+        Console.WriteLine("=== SCHRONISKO DLA ZWIERZĄT ===");
         Console.WriteLine();
 
         schronisko.WyswietlWszystkie();
