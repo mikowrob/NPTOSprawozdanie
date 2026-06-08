@@ -1,0 +1,122 @@
+package com.mycompany.mavenproject1;
+
+import java.awt.FlowLayout;
+import java.util.Arrays;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class Mavenproject1 extends JFrame {
+
+    private StosNaTablicy stos;
+    private JButton jButton1;
+    private JButton jButton2;
+    private JTextField rozmiarStosuTextField;
+    private JLabel jLabel1;
+
+    public Mavenproject1() {
+        initComponents();
+        stos = new StosNaTablicy();
+    }
+
+    private void initComponents() {
+        jButton1 = new JButton();
+        jButton2 = new JButton();
+        rozmiarStosuTextField = new JTextField();
+        jLabel1 = new JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Stos - Memory Profiler Test");
+
+        jButton1.setText("Dodaj element");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DodajElementyNaStos(evt);
+            }
+        });
+
+        jButton2.setText("Usun element");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UsunElementZeStosu(evt);
+            }
+        });
+
+        rozmiarStosuTextField.setEditable(false);
+        rozmiarStosuTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        rozmiarStosuTextField.setText("0");
+
+        jLabel1.setText("Rozmiar");
+
+        getContentPane().setLayout(new FlowLayout());
+        getContentPane().add(jButton1);
+        getContentPane().add(jButton2);
+        getContentPane().add(jLabel1);
+        getContentPane().add(rozmiarStosuTextField);
+
+        pack();
+        setSize(350, 130);
+        setLocationRelativeTo(null);
+    }
+
+    private void DodajElementyNaStos(java.awt.event.ActionEvent evt) {
+        Element e = new Element();
+        stos.push(e);        
+        rozmiarStosuTextField.setText("" + stos.size());
+    }
+
+    private void UsunElementZeStosu(java.awt.event.ActionEvent evt) {
+        Element e = stos.pop();        
+        rozmiarStosuTextField.setText("" + stos.size());
+    }
+
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Mavenproject1().setVisible(true);
+            }
+        });
+    }
+}
+
+class Element {
+    final static int N = 200000;
+    int[] tab;
+
+    Element() {
+        tab = new int[N];
+        for (int i = 0; i < N; i++) {
+            tab[i] = i * i;
+        }
+    }
+}
+
+class StosNaTablicy {
+    private Element[] tab;
+    private int size = 0;
+    private static final int initSize = 100;
+
+    public StosNaTablicy() {
+        tab = new Element[initSize];
+    }
+
+    public void push(Element e) {
+        if (size == tab.length) {
+            tab = Arrays.copyOf(tab, 2 * size + 1);
+        }
+        tab[size++] = e;
+    }
+
+    public Element pop() {
+        if (size > 0) {
+            return tab[--size]; 
+        } else {
+            return null;
+        }
+    }
+
+    public int size() {
+        return size;
+    }
+}
